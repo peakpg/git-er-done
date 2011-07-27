@@ -18,7 +18,10 @@ module Git
           
         # Add everything, commit it, merge it back into the main branch.
         desc 'done', 'Completes a feature'
-        def done(name)
+        def done(name=nil)
+          unless name
+            name = current_feature            
+          end
           puts "Completing a feature called #{feature_branch(name)}"
           git :add=>"."
           git :commit
@@ -27,7 +30,14 @@ module Git
           git :branch => "-d #{feature_branch(name)}"        
         end
         
-        desc 'sync', 'Brings your current feature up to date with master'
+        desc 'squash', 'Squash all commits from the current branch into a single commit.'
+        def squash
+          puts 'Squashing commits'
+          # Squash all changes since we branched away from master
+          git :rebase => "-i master"
+        end
+        
+        desc 'sync', 'Update your branch with the latest from master'
         def sync
           return_to_branch = current_branch
           git :checkout => :master
@@ -37,6 +47,7 @@ module Git
         end
         
         desc 'branch', 'Same as git branch.'
+        # Exists mainly so I can test how Grit works.
         def branch
           head = repo.head
           repo.branches.each do |b|
@@ -51,6 +62,14 @@ module Git
         end
         
         private
+        
+        def current_feature
+          b = current_branch
+          if b.start_with?("features/")
+            return b["features/".length, b.length]
+          end
+          return ""
+        end
         
         def current_branch
           repo.head.name

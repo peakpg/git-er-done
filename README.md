@@ -22,11 +22,12 @@ http://reinh.com/blog/2009/03/02/a-git-workflow-for-agile-teams.html
 
 ## Syntax
 
-Possible ideas:
+Things you can do:
 
 ```
-gd feature new_widget
-gd done new_widget
+gd - Lists all available commands.
+gd feature new_widget - Creates a new feature branch with the name 'new_widget'.
+gd done new_widget  - Completes a feature branch with the name 'new_widget'.
 gd hotfix
 gd done 
 ```
@@ -34,7 +35,8 @@ gd done
 ## Todo
 
 * Improve error messages for incorrectly supplied parameters. (i.e. gd feature)
-* If you gd sync with unstaged changes, it should not switch branches. (It does)
+* If you gd sync with unstaged changes, it should not switch branches. (It does which seems wrong)
+* Figure out how to unit test this.
 
 ## GitFlow Behavior
 
