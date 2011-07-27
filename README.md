@@ -34,6 +34,7 @@ gd done
 ## Todo
 
 * Improve error messages for incorrectly supplied parameters. (i.e. gd feature)
+* If you gd sync with unstaged changes, it should not switch branches. (It does)
 
 ## GitFlow Behavior
 
