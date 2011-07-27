@@ -25,6 +25,8 @@ module Git
           puts "Completing a feature called #{feature_branch(name)}"
           git :add=>"."
           git :commit
+          squash
+          # Should we also sync with master first?
           git :checkout => 'master'
           git :merge => feature_branch(name)
           git :branch => "-d #{feature_branch(name)}"        
@@ -32,7 +34,6 @@ module Git
         
         desc 'squash', 'Squash all commits from the current branch into a single commit.'
         def squash
-          puts 'Squashing commits'
           # Squash all changes since we branched away from master
           git :rebase => "-i master"
         end
