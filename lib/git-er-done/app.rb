@@ -1,5 +1,6 @@
 require 'thor'
 require 'rails/generators/actions'
+require 'grit'
 
 module Git
   module Er
@@ -26,7 +27,38 @@ module Git
           git :branch => "-d #{feature_branch(name)}"        
         end
         
+        desc 'sync', 'Brings your current feature up to date with master'
+        def sync
+          c_branch = current_branch
+          git :checkout => :master
+          git :pull
+          git :checkout => c_branch
+          git :rebase => :master
+        end
+        
+        desc 'branch', 'Same as git branch.'
+        def branch
+          head = repo.head
+          repo.branches.each do |b|
+            if head.name == b.name
+              print "* "
+            else
+              print "  "
+            end
+            puts b.name
+          end
+          
+        end
+        
         private
+        
+        def current_branch
+          repo.head.name
+        end
+        
+        def repo
+          repo ||= Grit::Repo.new('.')
+        end
         
         def feature_branch(name)  
           "features/#{name}"

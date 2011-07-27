@@ -1,5 +1,6 @@
 This project exists for a few reasons:
 
+1. I have a terrible memory for command line syntax, so I want something that reduces the number of commands I have to remember to do things right.
 1. I want to understand more how to configure git process flows (much like git-flow) does, but have more configurability (via Ruby)
 2. Gives an interesting test case for my Thor talk at DCRUG and Arlington RUG.
 3. Make doing the 'right' thing easy (i.e. feature branches should be simple. Smaller projects)
@@ -29,6 +30,10 @@ gd done new_widget
 gd hotfix
 gd done 
 ```
+
+## Todo
+
+* Improve error messages for incorrectly supplied parameters. (i.e. gd feature)
 
 ## GitFlow Behavior
 
