@@ -20,7 +20,10 @@ module Git
         def done(name)
           puts "Completing a feature called #{feature_branch(name)}"
           git :add=>"."
-          git :commit        
+          git :commit
+          git :checkout => 'master'
+          git :merge => "feature_branch(name)"
+          git :branch => "-d #{feature_branch(name)}"        
         end
         
         private
