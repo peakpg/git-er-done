@@ -29,10 +29,10 @@ module Git
         
         desc 'sync', 'Brings your current feature up to date with master'
         def sync
-          c_branch = current_branch
+          return_to_branch = current_branch
           git :checkout => :master
           git :pull
-          git :checkout => c_branch
+          git :checkout => return_to_branch
           git :rebase => :master
         end
         
