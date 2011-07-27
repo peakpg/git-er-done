@@ -22,7 +22,7 @@ module Git
           git :add=>"."
           git :commit
           git :checkout => 'master'
-          git :merge => "feature_branch(name)"
+          git :merge => feature_branch(name)
           git :branch => "-d #{feature_branch(name)}"        
         end
         
