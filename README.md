@@ -9,6 +9,14 @@ This project exists for a few reasons:
 3. Gives an interesting test case for my Thor talk at DCRUG and Arlington RUG.
 4. Make doing the 'right' thing easy (i.e. feature branches should be simple. Smaller projects)
 
+## Installation
+
+```
+gem install git_er_done
+```
+
+This makes the `gd` command available on your system.
+
 ## Syntax
 
 Things you can do:
