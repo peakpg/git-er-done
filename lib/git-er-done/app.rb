@@ -10,14 +10,16 @@ module Git
         include Thor::Actions
         include Rails::Generators::Actions
         
-        desc 'feature', 'Start a new feature as a git branch'
+        FEATURES_PATH = "features/"
+        
+        desc 'feature [NAME]', 'Start a new feature using a branch.'
         def feature(name)
           puts "Creating a new feature called #{feature_branch(name)}."
           git :checkout => "-b #{feature_branch(name)}"
         end
           
         # Add everything, commit it, merge it back into the main branch.
-        desc 'done', 'Completes a feature'
+        desc 'done (NAME)', 'Completes a feature (commits, squashes then merges into master). Call sync before doing this.'
         def done(name=nil)
           unless name
             name = current_feature            
@@ -38,7 +40,7 @@ module Git
           git :rebase => "-i master"
         end
         
-        desc 'sync', 'Update your branch with the latest from master'
+        desc 'sync', 'Update your branch with the latest from master.'
         def sync
           return_to_branch = current_branch
           git :checkout => :master
@@ -47,27 +49,14 @@ module Git
           git :rebase => :master
         end
         
-        desc 'branch', 'Same as git branch.'
-        # Exists mainly so I can test how Grit works.
-        def branch
-          head = repo.head
-          repo.branches.each do |b|
-            if head.name == b.name
-              print "* "
-            else
-              print "  "
-            end
-            puts b.name
-          end
-          
-        end
-        
         private
         
+        # Returns the name of the feature for the current branch
+        # @return [String] Name of feature (not include features/)
         def current_feature
           b = current_branch
-          if b.start_with?("features/")
-            return b["features/".length, b.length]
+          if b.start_with?(FEATURES_PATH)
+            return b[FEATURES_PATH.length, b.length]
           end
           return ""
         end
@@ -81,7 +70,7 @@ module Git
         end
         
         def feature_branch(name)  
-          "features/#{name}"
+          "#{FEATURES_PATH}#{name}"
         end
       end
     end
