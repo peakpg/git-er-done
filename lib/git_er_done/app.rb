@@ -48,7 +48,12 @@ module Git
           git :checkout => return_to_branch
           git :rebase => :master
         end
-        
+
+        desc 'version', 'Show the Git-Er-Done version and quit. (gd -v works too)'
+        map "-v" => :version
+        def version
+          puts "Git-Er-Done #{Git::Er::Done::VERSION}"
+        end
         private
         
         # Returns the name of the feature for the current branch
