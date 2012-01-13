@@ -72,7 +72,8 @@ Syncing frequently will help avoid nasty merges later.
 
 ## Syntax
 
-Command refernce:
+Command reference:
+
 ```
 gd - Lists all available commands.
 gd help <command> - Get help for a specific command.
