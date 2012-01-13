@@ -9,7 +9,6 @@ Feature: CLI
     Then the output should contain "Git-Er-Done"
     And should display the current version
 
-
   Scenario: Show version using -v
     When I run `gd -v`
     Then the output should contain "Git-Er-Done"
@@ -27,3 +26,5 @@ Feature: CLI
     Then the output should contain "Switched to branch 'master'"
     And the output should contain "Switched to branch 'features/new_widget"
     And the output should contain "Current branch features/new_widget is up to date"
+
+  

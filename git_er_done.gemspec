@@ -18,7 +18,7 @@ Gem::Specification.new do |s|
   s.executables   = `git ls-files -- bin/*`.split("\n").map{ |f| File.basename(f) }
   s.require_paths = ["lib"]
   
-  [['thor', '~> 0.14.6'], ['rails', '~> 3.0.9'], ['grit', '~>2.4']].each do |gem, version|
+  [['thor', '~> 0.14.6'], ['grit', '~>2.4']].each do |gem, version|
     s.add_dependency(gem, version)
   end
 end

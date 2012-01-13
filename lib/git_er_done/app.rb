@@ -1,6 +1,6 @@
 require 'thor'
-require 'rails/generators/actions'
 require 'grit'
+require 'git_er_done/actions'
 
 module Git
   module Er
@@ -8,7 +8,7 @@ module Git
       class App < Thor
         
         include Thor::Actions
-        include Rails::Generators::Actions
+        include Git::Er::Done::Actions
         
         FEATURES_PATH = "features/"
         
