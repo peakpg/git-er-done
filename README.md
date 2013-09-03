@@ -82,6 +82,7 @@ gd done new_widget  - Completes a feature branch with the name 'new_widget' (Com
 gd done - Completes the current feature branch you are on.
 gd squash - Condenses multiple commits for the current branch into a single commit.
 gd sync - Brings your branch up to date with the latest version (Use before finishing a feature)
+gd inception - Determines the original branch(es) your current commit came from.
 ```
 
 ## Goals

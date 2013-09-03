@@ -27,4 +27,40 @@ Feature: CLI
     And the output should contain "Switched to branch 'features/new_widget"
     And the output should contain "Current branch features/new_widget is up to date"
 
+  Scenario: Inception of a branch
+    Given I am working on a git project
+    And I run `git checkout -b staging`
+    And I commit a new file
+    When I run `gd feature new_widget`
+    And I commit another file
+    And I run `gd inception`
+    Then the output should contain:
+    """
+    Current branch 'features/new_widget' was forked from 'staging'
+    """
+
+  Scenario: Ambiguous inception of a branch
+    Given I am working on a git project
+    And I run `git checkout -b staging`
+    When I run `gd feature new_widget`
+    And I commit a new file
+    And I run `gd inception`
+    Then the output should contain:
+    """
+    Current branch 'features/new_widget' matches the following branches: 'master, staging'
+    """
+
+  @announce
+  Scenario: Completing work back into a non-master branch
+    Given I am working on a git project
+    And I run `git checkout -b staging`
+    When I run `gd feature new_widget`
+    And I commit a new file
+    And I run `gd done`
+    Then the output should contain:
+    """
+    Switched to branch 'staging'
+    """
+
+
   
