@@ -50,10 +50,9 @@ Feature: CLI
     Current branch 'features/new_widget' matches the following branches: 'master, staging'
     """
 
-  @announce
-  Scenario: Completing work back into a non-master branch
+  Scenario: Completing work branched from a non-master branch
     Given I am working on a git project
-    And I run `git checkout -b staging`
+    And I have been working in the "staging" branch
     When I run `gd feature new_widget`
     And I commit a new file
     And I run `gd done`

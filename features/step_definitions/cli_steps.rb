@@ -36,3 +36,12 @@ When /^I make several commits$/ do
   run_simple "git commit -m 'Add a file'"
 
 end
+
+When /^I have been working in the "([^"]*)" branch$/ do |branch_name|
+  steps %Q{
+      And I run `git checkout -b #{branch_name}`
+  }
+  write_file("#{branch_name}.md", "First commit for #{branch_name}")
+  run_simple "git add ."
+  run_simple "git commit -m 'First commit for #{branch_name}'"
+end

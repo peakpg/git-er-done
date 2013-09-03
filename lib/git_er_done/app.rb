@@ -31,8 +31,8 @@ module Git
 
         end
 
-        # Add everything, commit it, merge it back into the main branch.
-        desc 'done (NAME)', 'Completes a feature (commits, squashes then merges into master). Call sync before doing this.'
+        desc 'done (NAME)', 'Completes a feature (commits, squashes then merges into the inception branch).
+                             Recommend calling sync before doing this.'
         def done(name=nil)
           unless name
             name = current_feature
@@ -42,20 +42,20 @@ module Git
           git :commit
           squash
           # Should we also sync with master first?
-          git :checkout => 'master'
+          git :checkout => inception_branch_name
           git :merge => feature_branch(name)
           git :branch => "-d #{feature_branch(name)}"
         end
 
-        desc 'squash', 'Squash all commits from the current branch into a single commit.'
+        desc 'squash', 'Squash all commits from the current branch into a single commit (since inception).'
         def squash
           new_commits = commits_in_feature_branch.size
           if new_commits < 2
             puts "Only '#{new_commits}' new commits in this branch, so no squashing necessary."
             return
           end
-          # Squash all changes since we branched away from master
-          git :rebase => "-i master"
+          # Squash all changes since we branched away from inception branch
+          git :rebase => "-i #{inception_branch_name}"
         end
 
         desc 'info', "Report information about the current feature branch you are in."
@@ -81,6 +81,20 @@ module Git
 
         private
 
+        def inception_branch_name
+          branches = inception_branches
+          if branches.size > 1
+            say 'There is more than one possible inception branch for your current feature.'
+            branches.each_with_index do |branch, i|
+              say "#{i}. #{branch.name}"
+            end
+            index = ask "Which would you like merge it into?:"
+            branches[index]
+          else
+            branches.first.name
+          end
+        end
+
         # Returns a list of branches that the current commit could have been originated from.
         # @return [Array<Grit::Head>]
         def inception_branches
@@ -104,7 +118,7 @@ module Git
 
         # Returns a list of all commits for the current branch since it was forked from master.
         def commits_in_feature_branch
-          repo.commits_between(master_branch.name, current_branch.name)
+          repo.commits_between(inception_branch_name, current_branch.name)
         end
 
         # Returns the name of the feature for the current branch
