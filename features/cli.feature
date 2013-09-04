@@ -27,6 +27,19 @@ Feature: CLI
     And the output should contain "Switched to branch 'features/new_widget"
     And the output should contain "Current branch features/new_widget is up to date"
 
+  Scenario: Shouldn't be able to sync a non-feature branch
+    Given I am working on a git project
+    And I have been working in the "staging" branch
+    When I run `gd sync`
+    Then the script should exit with a warning
+
+  Scenario: Syncing from staging
+    Given I am working on a git project
+    And I have been working in the "staging" branch
+    Then I am working on the "features/new_widget" branch
+    When I run `gd sync`
+    Then the output should not contain "Switched to branch 'master'"
+
   Scenario: Inception of a branch
     Given I am working on a git project
     And I run `git checkout -b staging`
@@ -80,4 +93,4 @@ Feature: CLI
     And I commit a new file
     And I run `gd done` interactively
     And I type "3"
-    Then the program should fail using Thor's erroneous exit codes
+    Then the script should fail and exit

@@ -64,13 +64,18 @@ module Git
           puts "There are #{commits.size} new commits for #{current_branch_name}"
         end
 
-        desc 'sync', 'Update your branch with the latest from master.'
+        desc 'sync', 'Update your feature branch with the latest from the inception branch.'
         def sync
+          if long_running_branch?(current_branch)
+            say "Warning! The current branch ''#{current_branch.name}' is probably a long running branch. It probably has a remote that shouldn't be rebased.' "
+            exit
+          end
+
           return_to_branch = current_branch_name
-          git :checkout => :master
+          git :checkout => inception_branch_name
           git :pull
           git :checkout => return_to_branch
-          git :rebase => :master
+          git :rebase => inception_branch_name
         end
 
         desc 'version', 'Show the Git-Er-Done version and quit. (gd -v works too)'
@@ -119,9 +124,12 @@ module Git
         #
         # @return [Array<Grit::Head>]
         def long_running_branches
-          repo.heads.select { |head| !head.name.include?('features') }
+          repo.heads.select { |head| long_running_branch?(head) }
         end
 
+        def long_running_branch?(branch)
+          !branch.name.include?('features')
+        end
         # Returns a list of all commits for the current branch since it was forked from master.
         def commits_in_feature_branch
           repo.commits_between(inception_branch_name, current_branch.name)
