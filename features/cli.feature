@@ -61,5 +61,23 @@ Feature: CLI
     Switched to branch 'staging'
     """
 
+  Scenario: Completing work that could have been from multiple branches
+    Given I am working on a git project
+    And I run `git checkout -b staging`
+    When I run `gd feature new_widget`
+    And I commit a new file
+    And I run `gd done` interactively
+    And I type "1"
+    Then the output should contain:
+    """
+    Switched to branch 'master'
+    """
 
-  
+  Scenario: Selecting an invalid branch number.
+    Given I am working on a git project
+    And I run `git checkout -b staging`
+    When I run `gd feature new_widget`
+    And I commit a new file
+    And I run `gd done` interactively
+    And I type "3"
+    Then the program should fail using Thor's erroneous exit codes

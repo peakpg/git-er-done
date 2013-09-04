@@ -45,3 +45,12 @@ When /^I have been working in the "([^"]*)" branch$/ do |branch_name|
   run_simple "git add ."
   run_simple "git commit -m 'First commit for #{branch_name}'"
 end
+
+Then /^the program should fail using Thor's erroneous exit codes$/ do
+  # This really should be 1, but thor doesn't seem to respect error statuses
+  # See http://stackoverflow.com/questions/17241932/ruby-thor-exit-status-in-case-of-an-error
+  steps %Q{
+      Then the exit status should be 0
+      And the output should contain "Error!"
+  }
+end

@@ -81,18 +81,28 @@ module Git
 
         private
 
+        def self.exit_on_failure?
+          true
+        end
+
         def inception_branch_name
+          return @inception_branch.name if @inception_branch
           branches = inception_branches
-          if branches.size > 1
-            say 'There is more than one possible inception branch for your current feature.'
+          @inception_branch = if branches.size > 1
+            say 'There is more than one possible inception branch for your current feature.', :green
             branches.each_with_index do |branch, i|
-              say "#{i}. #{branch.name}"
+              say "#{i + 1}. #{branch.name}", :yellow
             end
-            index = ask "Which would you like merge it into?:"
-            branches[index]
+            index = ask "Which would you like merge it into?:", :green
+            unless index.to_i.between?(1, branches.size)
+              say "Error! Invalid branch selected.", :red
+              exit
+            end
+            branches[index.to_i - 1]
           else
-            branches.first.name
+            branches.first
           end
+          @inception_branch.name
         end
 
         # Returns a list of branches that the current commit could have been originated from.
