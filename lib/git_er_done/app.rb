@@ -81,10 +81,6 @@ module Git
 
         private
 
-        def self.exit_on_failure?
-          true
-        end
-
         def inception_branch_name
           return @inception_branch.name if @inception_branch
           branches = inception_branches
