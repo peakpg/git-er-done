@@ -11,11 +11,18 @@ module Git
         include Git::Er::Done::Actions
 
         FEATURES_PATH = "features/"
+        BUG_PATH = "bugs/"
 
         desc 'feature [NAME]', 'Start a new feature using a branch.'
         def feature(name)
           puts "Creating a new feature called #{feature_branch(name)}."
           git :checkout => "-b #{feature_branch(name)}"
+        end
+
+        desc 'bug [NAME]', 'Start a new bug in a separate branch.'
+        def bug(name)
+          puts "Creating a new bug called #{bug_branch(name)}."
+          git :checkout => "-b #{bug_branch(name)}"
         end
 
         desc 'inception', 'Find the branch(es) that the current branch was originally created from.'
@@ -166,6 +173,10 @@ module Git
 
         def feature_branch(name)
           "#{FEATURES_PATH}#{name}"
+        end
+
+        def bug_branch(name)
+          "#{BUG_PATH}#{name}"
         end
       end
     end

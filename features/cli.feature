@@ -14,6 +14,11 @@ Feature: CLI
     Then the output should contain "Git-Er-Done"
     And should display the current version
 
+  Scenario: Start a Bug
+    Given I am working on a git project
+    When I run `gd bug fix_100`
+    Then the output should contain "Switched to a new branch 'bugs/fix_100'"
+
   Scenario: Start a New Feature
     Given I am working on a git project
     When I run `gd feature new_widget`
