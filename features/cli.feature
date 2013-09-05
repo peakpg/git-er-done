@@ -14,6 +14,14 @@ Feature: CLI
     Then the output should contain "Git-Er-Done"
     And should display the current version
 
+  Scenario: Complete a Bug
+    Given I am working on a git project
+    And I run `gd bug fix_100`
+    And I commit a new file
+    When I run `gd done`
+    Then the output should contain "Deleted branch bugs/fix_100"
+    Then the output should contain "Switched to branch 'master'"
+
   Scenario: Start a Bug
     Given I am working on a git project
     When I run `gd bug fix_100`

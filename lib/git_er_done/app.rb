@@ -42,16 +42,16 @@ module Git
                              Recommend calling sync before doing this.'
         def done(name=nil)
           unless name
-            name = current_feature
+            name, type = current_feature
           end
-          puts "Completing a feature called #{feature_branch(name)}"
+          say "Completing a #{type} called #{full_branch_name(name, type)}"
           git :add=>"."
           git :commit
           squash
           # Should we also sync with master first?
           git :checkout => inception_branch_name
-          git :merge => feature_branch(name)
-          git :branch => "-d #{feature_branch(name)}"
+          git :merge => full_branch_name(name, type)
+          git :branch => "-d #{full_branch_name(name, type)}"
         end
 
         desc 'squash', 'Squash all commits from the current branch into a single commit (since inception).'
@@ -135,7 +135,7 @@ module Git
         end
 
         def long_running_branch?(branch)
-          !branch.name.include?('features')
+          !branch.name.include?('features/') && !branch.name.include?('bugs/')
         end
         # Returns a list of all commits for the current branch since it was forked from master.
         def commits_in_feature_branch
@@ -147,7 +147,9 @@ module Git
         def current_feature
           b = current_branch_name
           if b.start_with?(FEATURES_PATH)
-            return b[FEATURES_PATH.length, b.length]
+            return [b[FEATURES_PATH.length, b.length], :feature]
+          elsif b.start_with?(BUG_PATH)
+            return [b[BUG_PATH.length, b.length], :bug]
           end
           return ""
         end
@@ -169,6 +171,16 @@ module Git
             return head if head.name == "master"
           end
           raise "No branch named 'master' found."
+        end
+
+        # @param [String] short_branch_name i.e. fix_issue_100
+        # @param [Symbol] type :bug or :feature
+        def full_branch_name(short_branch_name, type)
+          if type == :feature
+            feature_branch(short_branch_name)
+          else
+            bug_branch(short_branch_name)
+          end
         end
 
         def feature_branch(name)
