@@ -14,7 +14,7 @@ This project exists for a few reasons:
 gem install git_er_done
 ```
 
-This makes the `gd` command available on your system.
+This makes the `gd` command available on your system. In 0.5.1, I have added some other alias commands `gi` and `gti` just to try them out for style.
 
 
 ## What you get
