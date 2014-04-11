@@ -100,6 +100,7 @@ Here's what I want to be able to support
 * Improve error messages for incorrectly supplied parameters. (i.e. gd feature)
 * If you gd sync with unstaged changes, it should not switch branches. (It does, which is probably wrong)
 * Better error checking (merges failing may cause problems)
+* 
 
 ## References
 
